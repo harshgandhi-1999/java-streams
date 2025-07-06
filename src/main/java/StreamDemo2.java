@@ -1,12 +1,12 @@
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.OptionalDouble;
 import java.util.stream.Collectors;
 
 public class StreamDemo2 {
     public static void main(String[] args) {
 //        1. Find the First Non-Repeating Character in a String
-
 
         String input = "swiss";
         Character firstNonRepeatingCh = input.chars()   // remember this method because there is no other method to convert to stream of characters input.chars().mapToObj(c -> (char)c)
@@ -68,6 +68,45 @@ public class StreamDemo2 {
 
         String maxLengthName = names.stream().max(Comparator.comparingInt(String::length)).orElse("");
         System.out.println(maxLengthName);
+
+//        11. Find Common Elements Between Two Lists
+        List<Integer> list1 = List.of(1, 2, 3, 4);
+        List<Integer> list2 = List.of(3, 4, 5, 6);
+
+        List<Integer> common = list1.stream().filter(list2::contains).toList();
+        System.out.println(common);
+
+//        12. Find the nth Smallest or Largest Number
+
+        List<Integer> numbers3= List.of(10, 20, 30, 40, 50, 2, 8, 15, 35, 47);
+        // 4th smallest
+        int nthSmallest = numbers3.stream().sorted().skip(3).findFirst().orElse(-1);
+        System.out.println("4TH SMALLEST = " + nthSmallest);
+
+        int nthLargest = numbers3.stream().sorted(Comparator.reverseOrder()).skip(3).findFirst().orElse(-1);
+        System.out.println("4TH GREATEST = " + nthLargest);
+
+//        13. Find the First Non-Repeating Character in a String
+        String s1= "sssssHiiiii";
+        Character c1 = s1.chars().mapToObj(c-> (char)c)
+                .filter(el -> s1.indexOf(el)==s1.lastIndexOf(el))
+                .findFirst().get();
+        System.out.println("First non repeating character = " + c1);
+
+//        14. Count the Occurrences of Each Character in a String
+        String s2= "sssssHiiiii";
+        Map<Character, Long> collect = s2.chars().mapToObj(c -> (char) c).collect(Collectors.groupingBy(c -> c, Collectors.counting()));
+        System.out.println(collect);
+
+
+//        15. Find the Sum and Average of a List of Numbers
+
+        int sum = numbers.stream().mapToInt(Integer::intValue).sum();
+        OptionalDouble avg = numbers.stream().mapToInt(Integer::intValue).average();
+
+        System.out.println("sum = " + sum);
+        System.out.println("avg = " + avg.getAsDouble());
+
     }
 
 }
